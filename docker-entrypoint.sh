@@ -5,9 +5,9 @@ if [ "$ENABLE_SENDMAIL" == "true" ]; then
     /etc/init.d/sendmail start
 fi
 
-if ! sudo -u www-data php /var/www/html/bin/magento store:list; then
+if ! sudo -E -u www-data php /var/www/html/bin/magento store:list; then
     echo "Installing Magento 2"
-    sudo -u www-data php /var/www/html/bin/magento setup:install \
+    sudo -E -u www-data php /var/www/html/bin/magento setup:install \
         --base-url=$MAGENTO_URL \
         --backend-frontname=$MAGENTO_BACKEND_FRONTNAME \
         --language=$MAGENTO_LANGUAGE \
@@ -31,7 +31,7 @@ else
 fi
 
 echo "Import Magento 2 configuration file"
-sudo -u www-data php /var/www/html/bin/magento app:config:import
+sudo -E -u www-data php /var/www/html/bin/magento app:config:import
 
 # Execute the supplied command
 exec "$@"
