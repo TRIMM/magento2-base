@@ -1,4 +1,4 @@
-FROM php:7.1-apache
+FROM alexcheng/magento2:2.2.2-integrator
 MAINTAINER Mark Wienk <mark.wienk@trimm.nl>
 
 ENV PHP_EXT_APCU_VERSION "5.1.7"
@@ -9,26 +9,19 @@ ENV MAGENTO_VERSION "2.2.0"
 ENV COMPOSER_HOME "/root/.composer"
 
 RUN apt-get update && apt-get install -y \
-    libfreetype6-dev \
-    libgd-dev \
-    libicu-dev \
-    libjpeg62-turbo-dev \
     libldap2-dev \
-    libmcrypt-dev \
     libmemcached-dev \
     libpng-dev \
     libxml2-dev \
-    libxslt1-dev \
     sendmail \
     sendmail-bin \
     sudo \
     && yes "" | pecl install apcu-$PHP_EXT_APCU_VERSION && docker-php-ext-enable apcu \
-    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install -j$(nproc) bcmath iconv gd exif mbstring mcrypt \
+    && docker-php-ext-install -j$(nproc) bcmath iconv exif \
     && echo "no" | pecl install memcached-$PHP_EXT_MEMCACHED_VERSION && docker-php-ext-enable memcached \
-    && docker-php-ext-install -j$(nproc) pcntl pdo_mysql mysqli soap \
+    && docker-php-ext-install -j$(nproc) pcntl mysqli \
     && yes | pecl install xdebug && docker-php-ext-enable xdebug \
-    && docker-php-ext-install -j$(nproc) xsl zip intl gettext \
+    && docker-php-ext-install -j$(nproc) gettext \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Composer
@@ -51,9 +44,5 @@ COPY ./php.ini /usr/local/etc/php/conf.d/zz-magento.ini
 COPY ./magento.conf /etc/apache2/conf-enabled/
 COPY ./000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY ./wait-for-it.sh /usr/local/bin/wait-for-it.sh
-COPY ./auth.json $COMPOSER_HOME
-
-# Install Magento 2
-RUN composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition . $MAGENTO_VERSION
 
 ENTRYPOINT ["docker-entrypoint.sh"]
