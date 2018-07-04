@@ -2,11 +2,7 @@ FROM alexcheng/magento2:2.2.2-integrator
 MAINTAINER Mark Wienk <mark.wienk@trimm.nl>
 
 ENV PHP_EXT_APCU_VERSION "5.1.7"
-ENV PHP_EXT_MEMCACHED_VERSION "3.0.3"
 ENV PHP_EXT_REDIS_VERSION "4.0.2"
-ENV MAGENTO_VERSION "2.2.0"
-
-ENV COMPOSER_HOME "/root/.composer"
 
 RUN apt-get update && apt-get install -y \
     libldap2-dev \
@@ -18,9 +14,7 @@ RUN apt-get update && apt-get install -y \
     sudo \
     && yes "" | pecl install apcu-$PHP_EXT_APCU_VERSION && docker-php-ext-enable apcu \
     && docker-php-ext-install -j$(nproc) bcmath iconv exif \
-    && echo "no" | pecl install memcached-$PHP_EXT_MEMCACHED_VERSION && docker-php-ext-enable memcached \
     && docker-php-ext-install -j$(nproc) pcntl mysqli \
-    && yes | pecl install xdebug && docker-php-ext-enable xdebug \
     && docker-php-ext-install -j$(nproc) gettext \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
