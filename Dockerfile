@@ -54,6 +54,6 @@ COPY ./wait-for-it.sh /usr/local/bin/wait-for-it.sh
 COPY ./auth.json $COMPOSER_HOME
 
 # Install Magento 2
-RUN composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition $MAGENTO_VERSION
+RUN composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition . $MAGENTO_VERSION
 
 ENTRYPOINT ["docker-entrypoint.sh"]
