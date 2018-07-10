@@ -5,7 +5,12 @@ if [ "$ENABLE_SENDMAIL" == "true" ]; then
     /etc/init.d/sendmail start
 fi
 
+if [ ! -f /var/www/html/app/etc/env.php ]; then
+    cp /var/www/html/app/etc/env.example /var/www/html/app/etc/env.php
+fi
+
 if ! sudo -E -u www-data php /var/www/html/bin/magento store:list; then
+    rm -rf /var/www/html/app/etc/env.php
     echo "Installing Magento 2"
     sudo -E -u www-data php /var/www/html/bin/magento setup:install \
         --base-url=$MAGENTO_URL \
@@ -26,9 +31,13 @@ if ! sudo -E -u www-data php /var/www/html/bin/magento store:list; then
         --admin-user=$MAGENTO_ADMIN_USERNAME \
         --admin-password=$MAGENTO_ADMIN_PASSWORD
     echo "Installing Magento 2 [DONE]"
+    rm -rf /var/www/html/app/etc/env.php
+    cp /var/www/html/app/etc/env.example /var/www/html/app/etc/env.php
 else
     echo "Magento 2 installed already"
 fi
+
+
 
 echo "Import Magento 2 configuration file"
 sudo -E -u www-data php /var/www/html/bin/magento app:config:import
