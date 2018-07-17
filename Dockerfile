@@ -40,3 +40,4 @@ COPY ./000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY ./wait-for-it.sh /usr/local/bin/wait-for-it.sh
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+CMD ["/sbin/my_init"]
