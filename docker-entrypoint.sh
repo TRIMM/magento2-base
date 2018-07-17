@@ -6,7 +6,7 @@ if [ "$ENABLE_SENDMAIL" == "true" ]; then
 fi
 
 if [ ! -f /var/www/html/app/etc/env.php ]; then
-    cp /var/www/html/app/etc/env.example /var/www/html/app/etc/env.php
+    sudo -E -u www-data cp /var/www/html/app/etc/env.example /var/www/html/app/etc/env.php
 fi
 
 if ! sudo -E -u www-data php /var/www/html/bin/magento store:list; then
@@ -36,8 +36,6 @@ if ! sudo -E -u www-data php /var/www/html/bin/magento store:list; then
 else
     echo "Magento 2 installed already"
 fi
-
-
 
 echo "Import Magento 2 configuration file"
 sudo -E -u www-data php /var/www/html/bin/magento app:config:import

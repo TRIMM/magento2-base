@@ -38,3 +38,5 @@ COPY ./php.ini /usr/local/etc/php/conf.d/zz-magento.ini
 COPY ./magento.conf /etc/apache2/conf-enabled/
 COPY ./000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY ./wait-for-it.sh /usr/local/bin/wait-for-it.sh
+
+ENTRYPOINT /usr/local/bin/docker-entrypoint.sh
