@@ -18,6 +18,7 @@ RUN set -ex; \
 		libpng-dev \
 		libpq-dev \
         libxslt1-dev \
+        unzip \
 	; \
 	\
     pecl install redis-4.2.0; \
