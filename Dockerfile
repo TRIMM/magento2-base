@@ -18,6 +18,7 @@ RUN set -ex; \
 		libpng-dev \
 		libpq-dev \
         libxslt1-dev \
+		sudo \
         unzip \
 	; \
 	\
@@ -84,7 +85,8 @@ RUN { \
 # Change docroot structure
 RUN rm -rf /var/www && \
     mkdir /var/www && \
-    sed -i 's/\/var\/www\/html/\/var\/www\/html\/pub/g' /etc/apache2/sites-enabled/000-default.conf
+    sed -i 's/\/var\/www\/html/\/var\/www\/html\/pub/g' /etc/apache2/sites-enabled/000-default.conf & \
+	chsh -s /bin/bash www-data
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | \
