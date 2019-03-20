@@ -11,6 +11,7 @@ RUN set -ex; \
 	\
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
+		libfreetype6 \
         libfreetype6-dev \
         libicu-dev \
 		libjpeg-dev \
@@ -22,7 +23,7 @@ RUN set -ex; \
 	; \
 	\
     pecl install redis-4.2.0; \
-	docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr; \
+	docker-php-ext-configure gd --with-png-dir=/usr --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr; \
 	docker-php-ext-install -j "$(nproc)" \
         bcmath \
         dom \
