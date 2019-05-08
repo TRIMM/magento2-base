@@ -76,6 +76,7 @@ RUN { \
         echo 'upload_max_filesize=64M'; \
         echo 'post_max_size=64M'; \
         echo 'apc.enable_cli=1'; \
+	echo 'default_socket_timeout=360'; \
     } > /usr/local/etc/php/conf.d/magento-recommended.ini
 
 RUN { \
